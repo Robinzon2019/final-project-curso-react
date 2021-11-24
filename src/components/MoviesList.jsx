@@ -5,9 +5,8 @@ import MovieCard from "./MovieCard";
 
 const MovieList = () => {
 
-    const [movies, setMovies] = useState(null);
+    const [movies, setMovies] = useState([]);
     const [loading, setLoading] = useState(true);
-    let i = 0;
 
     useEffect(() => {
         // axios
@@ -21,20 +20,24 @@ const MovieList = () => {
           .then(response => response.json())
           .then( data => {
               //console.log(data);
-              data.forEach(myFunction);
+              let datos = [];
+              data.results.forEach(myFunction);
 
               function myFunction(item, index, arr) {
                 const movieData = {
-                  title: data.results[index].name,
-                  popularity: data.results[index].popularity,
-                  overview: data.results[index].overview,
-                  poster_path: data.results[index].poster_path
+                  title: item.name,
+                  popularity: item.popularity,
+                  overview: item.overview,
+                  poster_path: item.poster_path
                 };
 
-                setMovies(movieData);
-                console.log(data);
+                datos.push(movieData);
+
+                //console.log(data);
 
               }
+
+              setMovies(data.results);
 
               // const movieData = {
               //   title: data.results[0].name,
@@ -42,13 +45,13 @@ const MovieList = () => {
               //   overview: data.results[0].overview,
               //   poster_path: data.results[0].poster_path
               // };
-              
 
+              // console.log(data);
+            
               
-            
-            
               setLoading(false);
-              console.log('movies: ' + movies);
+              console.log(movies);
+              //console.log('movies: ', movies);
             })
           .catch(error => console.log(error))
 

@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Menu from './components/menu';
 import MovieList from './components/MoviesList';
+import searcher from './components/searcher';
 
 function App() {
   // const [stateCar, setStateCar] = useState(false);
@@ -47,7 +48,7 @@ function App() {
   return (
     <>
       <Menu/>
-      
+      <searcher />
       {visible && <MovieList/> }
       <button onClick={()=>setVisible(!visible)}>Ocultar</button>
      </>
