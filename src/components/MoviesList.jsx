@@ -21,23 +21,20 @@ const MovieList = () => {
           .then( data => {
               //console.log(data);
               let datos = [];
-              data.results.forEach(myFunction);
+              data.results.forEach(getData);
 
-              function myFunction(item, index, arr) {
+              function getData(item, index, arr) {
                 const movieData = {
                   title: item.name,
-                  popularity: item.popularity,
                   overview: item.overview,
                   poster_path: item.poster_path
                 };
 
                 datos.push(movieData);
-
-                //console.log(data);
-
               }
 
               setMovies(data.results);
+              console.log(data.results);
 
               // const movieData = {
               //   title: data.results[0].name,
@@ -50,7 +47,7 @@ const MovieList = () => {
             
               
               setLoading(false);
-              console.log(movies);
+              //console.log(movies);
               //console.log('movies: ', movies);
             })
           .catch(error => console.log(error))
