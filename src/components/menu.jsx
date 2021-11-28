@@ -38,21 +38,7 @@ const Menu = ( {text, onChangeText, clearText} ) => {
                         <li className="nav-item">
                             <a className="nav-link" href="#">Advanced Search</a>
                         </li>
-                    </ul>
-                    { showInput ? ( <div className="col-4">
-                        <div className="input-group">
-                            <span className="input-group-text bg-dark text-white" id="addon-wrapping" onClick={conditionalClick}>
-                                <i className="fas fa-search pointer" />
-                            </span>
-                            <input type="text" className="form-control bg-dark text-white" value={text} onChange={onChangeText} placeholder="Title of the movie"/>
-                            { text !== "" ? (<span className="input-group-text bg-dark text-white pointer" id="addon-wrapping" onClick={clearText}>X</span>) : null }
-                        </div>
-                        </div> ) : (<div className="">
-                                    <i className="fas fa-search text-white pointer" onClick={handleClick}></i>
-                                </div>)
-                    }
-                
-                    
+                    </ul>                                        
                     </div>
                 </div>
             </nav>

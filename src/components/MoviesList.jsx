@@ -1,72 +1,58 @@
-import { useState, useEffect } from "react";
-import MovieCard from "./MovieCard";
-//import axios from "axios";
+import { useState } from "react";
+import FormSearch from "./FormSearch";
+import MovieCard from "../components/MovieCard";
+import { useEffect } from "react";
+import axios from "axios";
 
+const MoviesList = () => {
+  const [textSearch, setTextSearch] = useState("");
+  const [category, setCategory] = useState("");
+  const [products, setProducts] = useState([]);
+  const [filteredProducts, setFilteredProducts] = useState([...products]);
 
-const MovieList = () => {
+  useEffect(() => {
+    axios
+      .get("https://api.themoviedb.org/3/trending/all/day?api_key=76b3f65a7264db3196fc222e1ade510d")
+      .then((resp) =>setProducts([...resp.data.results]))
+      .catch((error) => console.log(error));
+    return () => console.log("Componente ha sido desmontado");
+  }, []);
+  const handleChangeText = (e) => {
+    setTextSearch(e.target.value);
+  };
 
-    const [movies, setMovies] = useState([]);
-    const [loading, setLoading] = useState(true);
+  const handleChangeCategory = (e) => {
+    setCategory(e.target.value);
+  };
 
-    useEffect(() => {
-        // axios
-        // .get("https://api.themoviedb.org/3/movie/550?api_key=76b3f65a7264db3196fc222e1ade510d")
-        // .then((resp) => {
-        //     setMovies([...resp.data])
-        //     console.log(resp);
-        // })
-        // .catch((error) => console.log(error));
-      fetch('https://api.themoviedb.org/3/trending/all/day?api_key=76b3f65a7264db3196fc222e1ade510d')
-          .then(response => response.json())
-          .then( data => {
-              //console.log(data);
-              let datos = [];
-              data.results.forEach(getData);
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setFilteredProducts(() => getFilteredProducts());
+  };
 
-              function getData(item, index, arr) {
-                const movieData = {
-                  title: item.name,
-                  overview: item.overview,
-                  poster_path: item.poster_path
-                };
+  const getFilteredProducts = () => {
+    return [
+      ...products
+        .filter((p) =>
+          p.original_title?.toLowerCase().includes(textSearch.toLowerCase())
+        )
+        .filter((r) => (category !== "" ? r.categoria === category : r)),
+    ];
+  };
+  return (
+    <>
+      <h1>Product List</h1>
+      <FormSearch
+        text={textSearch}
+        category={category}
+        onChangeText={handleChangeText}
+        onChangeCategory={handleChangeCategory}
+        categories={[...new Set(products.map((p) => p.categoria))]}
+        onSubmit={handleSubmit}
+      />
+      <MovieCard movies={getFilteredProducts()}></MovieCard>
+    </>
+  );
+};
 
-                datos.push(movieData);
-              }
-
-              setMovies(data.results);
-              console.log(data.results);
-
-              // const movieData = {
-              //   title: data.results[0].name,
-              //   popularity: data.results[0].popularity,
-              //   overview: data.results[0].overview,
-              //   poster_path: data.results[0].poster_path
-              // };
-
-              // console.log(data);
-            
-              
-              setLoading(false);
-              //console.log(movies);
-              //console.log('movies: ', movies);
-            })
-          .catch(error => console.log(error))
-
-          //setMovieTitle("Moana");
-      return () => console.log("Componente ha sido desmontado");
-
-    }, []);
-
-    return(
-        <>
-            {loading ? (<div className="spinner-border text-primary" role="status">
-                <span className="visually-hidden"></span>
-            </div>) : null }
-
-            {movies ? (<MovieCard movies={movies} />) : null}
-        </>
-    );
-
-}
-
-export default MovieList;
+export default MoviesList;

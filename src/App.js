@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import Menu from './components/menu';
 import MovieList from './components/MoviesList';
-import Searcher from './components/searcher';
+import FormSearch from './components/FormSearch';
 
 function App() {
   // const [stateCar, setStateCar] = useState(false);
@@ -60,11 +60,7 @@ function App() {
   return (
     <>
       <Menu text={textSearch} onChangeText={handleChangeText} clearText={clearText} />
-      <div className="container">
-        <Searcher />
-      </div>
-      {visible && <MovieList/> }
-      <button onClick={()=>setVisible(!visible)}>Ocultar</button>
+      <MovieList/>      
      </>
   )
 
