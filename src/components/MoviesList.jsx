@@ -7,13 +7,13 @@ import axios from "axios";
 const MoviesList = () => {
   const [textSearch, setTextSearch] = useState("");
   const [category, setCategory] = useState("");
-  const [products, setProducts] = useState([]);
-  const [filteredProducts, setFilteredProducts] = useState([...products]);
+  const [movies, setMovies] = useState([]);
+  const [filteredMovies, setFilteredMovies] = useState([...movies]);
 
   useEffect(() => {
     axios
       .get("https://api.themoviedb.org/3/trending/all/day?api_key=76b3f65a7264db3196fc222e1ade510d")
-      .then((resp) =>setProducts([...resp.data.results]))
+      .then((resp) =>setMovies([...resp.data.results]))
       .catch((error) => console.log(error));
     return () => console.log("Componente ha sido desmontado");
   }, []);
@@ -27,12 +27,12 @@ const MoviesList = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setFilteredProducts(() => getFilteredProducts());
+    setFilteredMovies(() => getFilteredMovies());
   };
 
-  const getFilteredProducts = () => {
+  const getFilteredMovies = () => {
     return [
-      ...products
+      ...movies
         .filter((p) =>
           p.original_title?.toLowerCase().includes(textSearch.toLowerCase())
         )
@@ -47,10 +47,10 @@ const MoviesList = () => {
         category={category}
         onChangeText={handleChangeText}
         onChangeCategory={handleChangeCategory}
-        categories={[...new Set(products.map((p) => p.categoria))]}
+        categories={[...new Set(movies.map((p) => p.categoria))]}
         onSubmit={handleSubmit}
       />
-      <MovieCard movies={getFilteredProducts()}></MovieCard>
+      <MovieCard movies={getFilteredMovies()}></MovieCard>
     </>
   );
 };
